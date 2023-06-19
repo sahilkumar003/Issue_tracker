@@ -48,3 +48,7 @@ class SignoutAPIView(APIView):
         logout(request)
         messages.success(request, "Logged out successfully")
         return redirect("home")
+
+
+def home(request):
+    return render(request, "dashboard/home.html")
