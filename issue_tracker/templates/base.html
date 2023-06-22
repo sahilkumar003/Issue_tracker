@@ -4,11 +4,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>Issue Management System</title>
     <link
       rel="stylesheet"
       href="{% static 'bootstrap/css/bootstrap.min.css'%}"
     />
+    <script src="{% static 'jquery.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <style>
+      body {
+        position: relative;
+        min-height: 100%;
+        min-height: 100vh;
+      }
+      footer {
+        background-color: #ddddddd1;
+        padding: 20px 0;
+        text-align: center;
+        margin-top: 30px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+      .logout-button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+      }
+    </style>
 
     {% block head %} {% endblock %}
   </head>
@@ -20,7 +48,7 @@
             <a href="" class="navbar-brand"> &nbsp; Issue Tracker System</a>
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a href="{% url 'index' %}" class="nav-link">Home</a>
+                <a href="{% url 'home' %}" class="nav-link">Home</a>
               </li>
               <li class="nav-item">
                 <a href="{% url 'signup' %}" class="nav-link">Signup</a>
@@ -35,31 +63,18 @@
 
       {% block start %} {% endblock %}
 
-      <div class="row bg-dark text-light p-5">
-        <div class="col-md-4" style="border-right: 2px solid white">
-          <h4>Lorem Ipsum</h4>
-          <small>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio
-            praesentium non omnis vitae! Saepe nisi, vitae neque doloribus,
-            tenetur dolorum nam impedit accusamus qui, vero dignissimos nobis
-            magnam incidunt assumenda.
-          </small>
+      <footer class="footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <p>&copy; 2023 Issue Tracker System. All rights reserved.</p>
+              <a href="/signout" class="logout-button">Logout</a>
+            </div>
+          </div>
         </div>
-        <div class="col-md-4" style="border-right: 2px solid white">
-          <ul>
-            <li>Link 1</li>
-            <li>Link 2</li>
-            <li>Link 3</li>
-          </ul>
-        </div>
-        <div class="col-md-4" style="border-right: 2px solid white">
-          <ul>
-            <li>Link 1</li>
-            <li>Link 2</li>
-            <li>Link 3</li>
-          </ul>
-        </div>
-      </div>
+      </footer>
     </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

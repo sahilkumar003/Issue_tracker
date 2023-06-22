@@ -1,25 +1,30 @@
+from django.views import View
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView
 from .models import Project, Member
 from users.models import User
-from django import forms
+from django.contrib import messages
 
 
-class ProjectCreateView(CreateView):
-    model = Project
-    fields = ["title", "description", "members"]
+class CreateProjectView(View):
+    def get(self, request):
+        users = User.objects.all()
+        context = {"users": users}
+        return render(request, "projects/project_create.html", context)
 
-    def __init__(self, request=None, *args, **kwargs):
-        super().__init__(request=request, *args, **kwargs)
-        if request is not None:
-            self.members = forms.ModelMultipleChoiceField(
-                queryset=User.objects.exclude(
-                    projects__in=Project.objects.filter(creator=request.user)
-                ),
-                widget=forms.CheckboxSelectMultiple,
-            )
+    def post(self, request):
+        print(request.POST)
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        owner = request.POST.get("owner") == "on"
+        members = request.POST.getlist("members")
 
-    def form_valid(self, form):
-        form.instance.creator = self.request.user
-        form.save()
-        return redirect("projects:project_create")
+        project = Project.objects.create(
+            title=title, description=description, owner=owner
+        )
+        for member_id in members:
+            user = User.objects.get(id=member_id)
+            role = request.POST.get(f"member_role_{member_id}")
+            Member.objects.create(user=user, project=project, role=role)
+
+        messages.success(request, "Project has been successfully created")
+        return redirect("home")
