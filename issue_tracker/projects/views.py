@@ -1,15 +1,18 @@
-from django.views import View
+from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .models import Project, Member
 from users.models import User
 from django.contrib import messages
 
 
-class CreateProjectView(View):
-    def get(self, request):
+class CreateProjectView(TemplateView):
+    template_name = "projects/project_create.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         users = User.objects.all()
-        context = {"users": users}
-        return render(request, "projects/project_create.html", context)
+        context["users"] = users
+        return context
 
     def post(self, request):
         print(request.POST)

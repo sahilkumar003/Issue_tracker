@@ -1,5 +1,4 @@
-{% extends "base.html" %} {% block head%}
-
+{% extends "base.html" %} {% block head %}
 <style>
   .signup-button {
     background-color: blueviolet;
@@ -13,10 +12,12 @@
     margin-top: 10px;
     margin-left: -100px;
   }
+
+  .error-message {
+    color: red;
+  }
 </style>
-
 {% endblock %} {% block start %}
-
 <h3>Sign Up</h3>
 
 <form action="/signup" method="post">
@@ -32,6 +33,9 @@
       placeholder="Enter your first name"
       required
     />
+    {% if serializer_errors.first_name %}
+    <p class="error-message">{{ serializer_errors.first_name.0 }}</p>
+    {% endif %}
   </div>
 
   <div class="form-group">
@@ -44,6 +48,9 @@
       placeholder="Enter your last name"
       required
     />
+    {% if serializer_errors.last_name %}
+    <p class="error-message">{{ serializer_errors.last_name.0 }}</p>
+    {% endif %}
   </div>
 
   <div class="form-group">
@@ -56,6 +63,9 @@
       placeholder="Enter your valid Email Address"
       required
     />
+    {% if serializer_errors.email %}
+    <p class="error-message">{{ serializer_errors.email.0 }}</p>
+    {% endif %}
   </div>
 
   <div class="form-group">
@@ -68,6 +78,9 @@
       placeholder="Create your password"
       required
     />
+    {% if serializer_errors.password %}
+    <p class="error-message">{{ serializer_errors.password.0 }}</p>
+    {% endif %}
   </div>
 
   <div class="form-group">
