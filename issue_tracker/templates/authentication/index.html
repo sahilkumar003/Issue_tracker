@@ -1,22 +1,68 @@
-{% extends "base.html" %} {% block start %} {% for message in messages %}
+{% extends "base.html" %} {% block head%}
+
+<style>
+  .signout-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  .signin-button {
+    background-color: green;
+    display: inline-block;
+    color: #fff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  .signup-button {
+    background-color: blueviolet;
+    display: inline-block;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-bottom: 10px;
+  }
+</style>
+
+{% endblock %} {% block start %} {% for message in messages %}
 <div
   class="alert alert-{{message.tags}} alert-dismissible fade show"
   role="alert"
 >
-  <strong>Message:</strong>{{ message }}
+  <strong style="color: #dc3545">Message:</strong>{{ message }}
   <button type="button" class="close" data-dismiss="alert" aria-label="close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 {% endfor %}
 
-<h3>Welcome to the Issue Management System</h3>
+<div class="col-md-12">
+  <h1>Welcome to the Issue Management System</h1>
+  <p>
+    Issue Management System is the agile project management tool used by teams
+    to plan, track, release and support world-class software with confidence. It
+    is the single source of truth for your entire development lifecycle,
+    empowering autonomous teams with the context to move quickly while staying
+    connected to the greater business goal. Whether used to manage simple
+    projects or to power your DevOps practices, this Software makes it easy for
+    teams to move work forward, stay aligned, and communicate in context.
+  </p>
+</div>
 
 {% if user.is_authenticated %}
-<h3>Hello {{ request.session.first_name }}</h3>
-<h4>You're successfully logged in.</h4>
-<button type="submit"><a href="/signout"> Sign Out </a></button>
-{% else %}
-<button type="submit"><a href="/signup"> Sign Up </a></button>
-<button type="submit"><a href="/signin"> Sign In </a></button>
-{% endif %} {% endblock %}
+<h3 style="color: rgb(17, 7, 152)">Hello {{ request.session.first_name }}</h3>
+<h4 style="color: rgb(17, 217, 17)">You're successfully logged in.</h4>
+<class ="container">
+  <div class="row">
+    <div class="col-md-12 p-5">
+      <a href="/signout" class="signout-button">Logout</a>
+    </div>
+  </div>
+  {% else %} {% endif %} {% endblock %}
+</class>

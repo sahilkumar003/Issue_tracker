@@ -1,23 +1,25 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from users.models import User
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
-# Create your views here.
 
+class ProfileEditAPIView(APIView):
+    def get(self, request):
+        users = User.objects.get(email=request.user.email)
+        context = {"users": users}
+        return render(request, "users/profile_edit.html", context)
 
-def profile_edit(request):
-    context = {}
-    if request.method == "POST":
+    def post(self, request):
         data = User.objects.get(email=request.user.email)
-
-        context["data"] = data
-        print(request.POST)
-        first_name = request.POST["first_name"]
-        last_name = request.POST["last_name"]
+        first_name = request.data.get("first_name")
+        last_name = request.data.get("last_name")
 
         user = User.objects.get(email=request.user.email)
         user.first_name = first_name
         user.last_name = last_name
         user.save()
 
-        context["status"] = "Changes Saved successfully"
-    return render(request, "users/profile_edit.html", context)
+        messages.success(request, "Changes have been saved")
+        return redirect("profile_edit")

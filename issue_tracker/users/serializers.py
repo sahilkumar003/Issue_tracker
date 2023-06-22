@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_password(self, value):
         password_regex = re.compile(
-            r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+            r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"
         )
         if not password_regex.match(value):
             raise serializers.ValidationError(
