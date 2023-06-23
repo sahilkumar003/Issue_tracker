@@ -34,7 +34,6 @@ class SigninView(TemplateView):
 
         if user is not None:
             login(request, user)
-            request.session["first_name"] = user.first_name
             return redirect("home")
         else:
             messages.error(request, "Bad credentials")

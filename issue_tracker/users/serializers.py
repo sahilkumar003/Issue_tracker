@@ -6,7 +6,7 @@ from users.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["email", "password", "first_name", "last_name"]
+        fields = ["email", "password", "first_name", "last_name", "dob"]
 
     def validate_first_name(self, value):
         name_regex = re.compile(r"^[A-Za-z]+$")
@@ -47,5 +47,6 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             password=validated_data["password"],
+            dob=validated_data["dob"],
         )
         return user

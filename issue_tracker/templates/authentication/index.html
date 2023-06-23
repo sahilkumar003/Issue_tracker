@@ -54,15 +54,4 @@
     teams to move work forward, stay aligned, and communicate in context.
   </p>
 </div>
-
-{% if user.is_authenticated %}
-<h3 style="color: rgb(17, 7, 152)">Hello {{ request.session.first_name }}</h3>
-<h4 style="color: rgb(17, 217, 17)">You're successfully logged in.</h4>
-<class ="container">
-  <div class="row">
-    <div class="col-md-12 p-5">
-      <a href="/signout" class="signout-button">Logout</a>
-    </div>
-  </div>
-  {% else %} {% endif %} {% endblock %}
-</class>
+{% endblock %}

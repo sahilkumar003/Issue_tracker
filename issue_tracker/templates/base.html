@@ -7,7 +7,7 @@
     <title>Issue Management System</title>
     <link
       rel="stylesheet"
-      href="{% static 'bootstrap/css/bootstrap.min.css'%}"
+      href="{% static 'bootstrap/css/bootstrap.min.css' %}"
     />
     <script src="{% static 'jquery.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
@@ -17,16 +17,17 @@
         position: relative;
         min-height: 100%;
         min-height: 100vh;
+        padding-bottom: 60px; /* Adjust this value based on your needs */
       }
       footer {
         background-color: #ddddddd1;
         padding: 20px 0;
         text-align: center;
-        margin-top: 30px;
         position: absolute;
         right: 0;
         bottom: 0;
         left: 0;
+        margin-top: 30px;
       }
       .logout-button {
         background-color: #dc3545;
@@ -62,18 +63,18 @@
       </div>
 
       {% block start %} {% endblock %}
+    </div>
 
-      <footer class="footer">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <p>&copy; 2023 Issue Tracker System. All rights reserved.</p>
-              <a href="/signout" class="logout-button">Logout</a>
-            </div>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p>&copy; 2023 Issue Tracker System. All rights reserved.</p>
+            <a href="/signout" class="logout-button">Logout</a>
           </div>
         </div>
-      </footer>
-    </div>
+      </div>
+    </footer>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js"></script>
   </body>
