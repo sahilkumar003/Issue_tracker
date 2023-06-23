@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .manager import UserManager
+from datetime import date
 
 # Create your models here.
 
@@ -11,6 +12,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=255, null=False)
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
+    dob = models.DateField(default=date.today)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
