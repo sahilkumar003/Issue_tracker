@@ -1,13 +1,16 @@
 from django.db import models
 from users.models import User
 
+
 # Create your models here.
 
 
 class Project(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    owner = models.BooleanField(default=False)
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="owned_projects"
+    )
     members = models.ManyToManyField(User, through="Member")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

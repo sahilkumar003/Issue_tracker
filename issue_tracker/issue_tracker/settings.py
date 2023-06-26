@@ -85,7 +85,7 @@ WSGI_APPLICATION = "issue_tracker.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "projectTesting",
+        "NAME": "jira",
         "USER": "postgres",
         "PASSWORD": "Psqlitsmesahil@123",
         "HOST": "localhost",

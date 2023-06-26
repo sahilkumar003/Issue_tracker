@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from users.serializers import UserSerializer
 from rest_framework import status
+from django.urls import reverse
 
 
 class HomeView(TemplateView):
@@ -34,7 +35,7 @@ class SigninView(TemplateView):
 
         if user is not None:
             login(request, user)
-            return redirect("home")
+            return redirect("projects:dashboard")
         else:
             messages.error(request, "Bad credentials")
             return redirect("signin")
