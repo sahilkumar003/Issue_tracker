@@ -4,6 +4,7 @@ from .models import Project, Member
 from users.models import User
 from django.contrib import messages
 from .serializers import ProjectSerializer
+from django.http import request
 
 
 class CreateProjectView(TemplateView):
@@ -16,7 +17,15 @@ class CreateProjectView(TemplateView):
         return context
 
     def post(self, request):
-        serializer = ProjectSerializer(data=request.POST)
+        print(request.POST)
+        print(request.user)
+        data = {
+            "title": request.POST.get("title"),
+            "description": request.POST.get("description"),
+            "members": [],
+            "owner": request.user.id,
+        }
+        serializer = ProjectSerializer(data=data, context={"request": request})
         if serializer.is_valid():
             project = serializer.save()
             members = request.POST.getlist("members")
@@ -28,5 +37,25 @@ class CreateProjectView(TemplateView):
             messages.success(request, "Project has been successfully created")
             return redirect("home")
         else:
+            print(serializer.errors)
             context = self.get_context_data(serializer_errors=serializer.errors)
             return self.render_to_response(context)
+
+
+class DashboardView(TemplateView):
+    template_name = "projects/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        filter_param = self.kwargs.get("filter_param")
+
+        if filter_param == "owned":
+            projects = Project.objects.filter(owner=user)
+        elif filter_param == "member":
+            projects = Project.objects.filter(members=user)
+        else:
+            projects = Project.objects.all()
+
+        context["projects"] = projects
+        return context
