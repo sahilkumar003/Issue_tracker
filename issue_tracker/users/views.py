@@ -19,6 +19,7 @@ class ProfileEditView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request):
+        print(request.POST)
         user = User.objects.get(email=request.user.email)
         serializer = UserSerializer(user, data=request.POST, partial=True)
         if serializer.is_valid():

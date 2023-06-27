@@ -14,21 +14,29 @@
 
     <style>
       body {
-        position: relative;
-        min-height: 100%;
+        display: flex;
+        flex-direction: column;
         min-height: 100vh;
-        padding-bottom: 60px; /* Adjust this value based on your needs */
       }
+
+      .alert {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+
+      .content-wrapper {
+        flex: 1;
+        padding-bottom: 60px;
+      }
+
       footer {
-        background-color: #ddddddd1;
+        background-color: #f8f9fa;
         padding: 20px 0;
         text-align: center;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin-top: 30px;
+        margin-top: auto;
       }
+
       .logout-button {
         background-color: #dc3545;
         color: #fff;
@@ -36,6 +44,11 @@
         padding: 10px 20px;
         border-radius: 5px;
         text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      .logout-button:hover {
+        background-color: #c82333;
       }
     </style>
 
@@ -45,24 +58,50 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 px-0">
-          <nav class="navbar navbar-expand bg-dark navbar-dark">
-            <a href="" class="navbar-brand"> &nbsp; Issue Tracker System</a>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a href="{% url 'home' %}" class="nav-link">Home</a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'signup' %}" class="nav-link">Signup</a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'signin' %}" class="nav-link">Signin</a>
-              </li>
-            </ul>
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a href="" class="navbar-brand">&nbsp; Issue Tracker System</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a href="{% url 'home' %}" class="nav-link">Home</a>
+                </li>
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                  <a href="/signup" class="nav-link">Register</a>
+                </li>
+                {% endif %} {% if not user.is_authenticated %}
+                <li class="nav-item">
+                  <a href="/signin" class="nav-link">Login</a>
+                </li>
+                {% endif %} {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a href="/projects/dashboard/all/" class="nav-link"
+                    >Dashboard</a
+                  >
+                </li>
+                {% endif %} {% if user.is_authenticated %}
+                <li class="nav-item" style="padding-left: 1050px">
+                  <a href="/users/profile_view" class="nav-link">Profile</a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
           </nav>
         </div>
       </div>
 
-      {% block start %} {% endblock %}
+      <div class="content-wrapper">{% block start %} {% endblock %}</div>
     </div>
 
     <footer class="footer">

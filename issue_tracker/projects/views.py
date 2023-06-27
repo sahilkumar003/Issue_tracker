@@ -5,14 +5,16 @@ from users.models import User
 from django.contrib import messages
 from .serializers import ProjectSerializer
 from django.http import request
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class CreateProjectView(TemplateView):
+class CreateProjectView(LoginRequiredMixin, TemplateView):
     template_name = "projects/project_create.html"
+    login_url = "signin"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        users = User.objects.all()
+        users = User.objects.exclude(id=self.request.user.id)
         context["users"] = users
         return context
 
@@ -35,15 +37,16 @@ class CreateProjectView(TemplateView):
                 Member.objects.create(user=user, project=project, role=role)
 
             messages.success(request, "Project has been successfully created")
-            return redirect("home")
+            return redirect("projects:dashboard")
         else:
             print(serializer.errors)
             context = self.get_context_data(serializer_errors=serializer.errors)
             return self.render_to_response(context)
 
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "projects/dashboard.html"
+    login_url = "signin"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
