@@ -6,6 +6,8 @@ from django.contrib import messages
 from .serializers import ProjectSerializer
 from django.http import request
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
+from django.core.mail import send_mail
 
 
 class CreateProjectView(LoginRequiredMixin, TemplateView):
@@ -35,6 +37,12 @@ class CreateProjectView(LoginRequiredMixin, TemplateView):
                 user = User.objects.get(id=member_id)
                 role = request.POST.get(f"member_role_{member_id}")
                 Member.objects.create(user=user, project=project, role=role)
+
+                subject = "You have been added to a project"
+                message = f"You have been added to the project '{project.title}'."
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user.email]
+                send_mail(subject, message, email_from, recipient_list)
 
             messages.success(request, "Project has been successfully created")
             return redirect("projects:dashboard")

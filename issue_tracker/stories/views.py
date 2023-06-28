@@ -7,6 +7,8 @@ from .serializers import StorySerializer
 from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.core.mail import send_mail
 
 
 class CreateStoryView(LoginRequiredMixin, TemplateView):
@@ -42,6 +44,13 @@ class CreateStoryView(LoginRequiredMixin, TemplateView):
         if serializer.is_valid():
             serializer.save()
             messages.success(request, "Story has been successfully created")
+            assignee_id = request.POST.get("assignee")
+            assignee = User.objects.get(id=assignee_id)
+            subject = "You have been assigned a story"
+            message = f"You have been assigned the story '{serializer.data['title']}' in project '{project.title}'."
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [assignee.email]
+            send_mail(subject, message, email_from, recipient_list)
             return redirect("projects:dashboard")
 
         else:
@@ -79,9 +88,7 @@ class UpdateStoryView(LoginRequiredMixin, TemplateView):
         project_id = self.kwargs["project_id"]
         story_id = self.kwargs["story_id"]
         project = Project.objects.get(id=project_id)
-        story = Story.objects.get(
-            id=story_id, project_id=project_id
-        )  # Fetch story with project_id filter
+        story = Story.objects.get(id=story_id, project_id=project_id)
 
         if (
             self.request.user in project.members.all()
