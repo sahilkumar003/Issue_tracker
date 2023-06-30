@@ -9,4 +9,14 @@ urlpatterns = [
         views.DashboardView.as_view(),
         name="dashboard_filter",
     ),
+    path(
+        "project_edit/<int:project_id>/",
+        views.ProjectEditView.as_view(),
+        name="project_edit",
+    ),
+    path(
+        "project_delete/<int:project_id>/",
+        views.ProjectDeleteView.as_view(),
+        name="project_delete",
+    ),
 ]

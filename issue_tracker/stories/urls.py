@@ -13,4 +13,9 @@ urlpatterns = [
         views.UpdateStoryView.as_view(),
         name="stories_update",
     ),
+    path(
+        "delete/<int:project_id>/<int:story_id>/",
+        views.StoryDeleteView.as_view(),
+        name="stories_delete",
+    ),
 ]
