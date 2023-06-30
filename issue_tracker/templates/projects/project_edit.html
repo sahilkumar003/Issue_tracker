@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block head %}
+{% extends "base.html" %}
+
+{% block head %}
 <style>
   .create-button {
     display: inline-block;
@@ -16,12 +18,14 @@
     margin-bottom: 100px;
   }
 </style>
-{% endblock %} {% block start %}
+{% endblock %}
 
-<h3>Create Project</h3>
+{% block start %}
+<h3>Update Project</h3>
 
 <div class="container main-content">
-  <form action="{% url 'projects:project_create' %}" method="post">
+    {% if users %}
+  <form action="{% url 'projects:project_edit' project.id %}" method="post">
     {% csrf_token %}
 
     <div class="form-group">
@@ -32,6 +36,8 @@
         name="title"
         class="form-control"
         placeholder="Enter the project title.."
+        value="{{ project.title }}"
+        readonly
         required
       />
     </div>
@@ -44,6 +50,7 @@
         name="description"
         class="form-control"
         placeholder="Enter your project description.."
+        value="{{ project.description }}"
         required
       />
     </div>
@@ -55,21 +62,27 @@
         <input
           type="checkbox"
           class="form-check-input"
-          name="members"
+          name="members[]"
           value="{{ user.id }}"
+          {% if user in project.members.all %}
+          checked
+          {% endif %}
         />
-        <label class="form-check-label"
-          >{{ user.first_name }} {{ user.last_name }}</label
-        >
+        <label class="form-check-label">{{ user.first_name }} {{ user.last_name }}</label>
         <select name="member_role_{{ user.id }}" class="form-select">
-          <option value="2" selected>Project Member</option>
+          <option value="2" {% if user in project.members.all and user.member.role == 2 %}selected{% endif %}>Project Member</option>
         </select>
       </div>
       {% endfor %}
     </div>
     <button type="submit" class="btn btn-primary create-button">
-      Create Project
+      Update Project
     </button>
   </form>
+  {% else %}
+  <p style="font-weight: bold; color: red; text-align: center">
+    You are not authorized to edit this project.
+  </p>
+  {% endif %}
 </div>
 {% endblock %}

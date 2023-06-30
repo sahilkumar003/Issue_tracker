@@ -25,21 +25,7 @@
   }
 </style>
 
-{% endblock %} {% block start %} {% for message in messages %}
-<div
-  class="alert alert-{{ message.tags }} alert-dismissible fade show"
-  role="alert"
->
-  <strong class="text-danger">Message:</strong> {{ message }}
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
-</div>
-{% endfor %}
-
+{% endblock %} {% block start %}
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-6">
@@ -68,7 +54,23 @@
       {% if projects %} {% for project in projects %}
       <div class="card mb-3">
         <div class="card-body">
-          <h5 class="card-title">{{ project.title }}</h5>
+          <h5 class="card-title d-flex justify-content-between">
+            {{ project.title }}
+            <div class="btn-group">
+              <a
+                href="{% url 'projects:project_edit' project_id=project.id %}"
+                class="btn btn-primary"
+                >Edit</a
+              >
+              <form
+                action="{% url 'projects:project_delete' project_id=project.id %}"
+                method="post"
+              >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+          </h5>
           <p class="card-text">{{ project.description }}</p>
           <div class="btn-group">
             <a

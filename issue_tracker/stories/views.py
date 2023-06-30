@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.shortcuts import render, redirect
 from .models import Story
 from projects.models import Project
@@ -47,7 +47,7 @@ class CreateStoryView(LoginRequiredMixin, TemplateView):
             assignee_id = request.POST.get("assignee")
             assignee = User.objects.get(id=assignee_id)
             subject = "You have been assigned a story"
-            message = f"You have been assigned the story '{serializer.data['title']}' in project '{project.title}'."
+            message = f"You have been assigned with the story '{serializer.data['title']}' in project '{project.title}'."
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [assignee.email]
             send_mail(subject, message, email_from, recipient_list)
@@ -68,10 +68,10 @@ class StoryListView(LoginRequiredMixin, TemplateView):
         project_id = self.kwargs["project_id"]
         project = Project.objects.get(id=project_id)
         scheduled_stories = Story.objects.filter(
-            project=project, is_scheduled=1
+            project=project, is_scheduled=1, is_deleted=False
         ).order_by("-status", "created_at")
         unscheduled_stories = Story.objects.filter(
-            project=project, is_scheduled=2
+            project=project, is_scheduled=2, is_deleted=False
         ).order_by("-status", "created_at")
         context["project"] = project
         context["scheduled_stories"] = scheduled_stories
@@ -116,6 +116,13 @@ class UpdateStoryView(LoginRequiredMixin, TemplateView):
             messages.error(request, "Started/Finished stories cannot be unscheduled.")
             return self.get(request, project_id=project_id, story_id=story_id)
 
+        if story.status in [2, 3] and request.POST.get("assignee") != story.assignee:
+            messages.error(
+                request,
+                "Assignee cannot be changed for stories with status finished or started.",
+            )
+            return self.get(request, project_id=project_id, story_id=story_id)
+
         if request.POST.get("is_scheduled") == "2" and story.status != 1:
             messages.error(
                 request,
@@ -132,3 +139,13 @@ class UpdateStoryView(LoginRequiredMixin, TemplateView):
             context = self.get_context_data()
             context["serializer_errors"] = serializer.errors
             return self.render_to_response(context)
+
+
+class StoryDeleteView(LoginRequiredMixin, View):
+    def post(self, request, project_id, story_id):
+        story = Story.objects.get(id=story_id)
+        story.is_deleted = True
+        story.save()
+
+        messages.success(request, "Story has been soft deleted")
+        return redirect("stories:stories_list", project_id=project_id)

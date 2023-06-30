@@ -12,17 +12,7 @@
     margin-top: 1rem;
   }
 </style>
-{% endblock %} {% block start %} {% for message in messages %}
-<div
-  class="alert alert-{{message.tags}} alert-dismissible fade show"
-  role="alert"
->
-  <strong style="color: #dc3545">Message:</strong>{{ message }}
-  <button type="button" class="close" data-dismiss="alert" aria-label="close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endfor %}
+{% endblock %} {% block start %}
 
 <div class="container mt-4">
   <h1 class="text-center">Create Story</h1>

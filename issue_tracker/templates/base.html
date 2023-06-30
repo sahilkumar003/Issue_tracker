@@ -17,6 +17,12 @@
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        background: rgb(238, 174, 202);
+        background: radial-gradient(
+          circle,
+          rgba(238, 174, 202, 1) 0%,
+          rgba(148, 187, 233, 1) 52%
+        );
       }
 
       .alert {
@@ -35,6 +41,12 @@
         padding: 20px 0;
         text-align: center;
         margin-top: auto;
+        background: rgb(63, 94, 251);
+        background: radial-gradient(
+          circle,
+          rgba(63, 94, 251, 1) 0%,
+          rgba(252, 70, 107, 1) 100%
+        );
       }
 
       .logout-button {
@@ -101,7 +113,24 @@
         </div>
       </div>
 
-      <div class="content-wrapper">{% block start %} {% endblock %}</div>
+      <div class="content-wrapper">
+        {% block messages %} {% for message in messages %}
+        <div
+          class="alert alert-{{ message.tags }} alert-dismissible fade show"
+          role="alert"
+        >
+          <strong style="color: #dc3545">Message:</strong> {{ message }}
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %} {% endblock %} {% block start %} {% endblock %}
+      </div>
     </div>
 
     <footer class="footer">
