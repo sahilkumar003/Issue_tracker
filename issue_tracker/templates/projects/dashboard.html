@@ -57,18 +57,23 @@
           <h5 class="card-title d-flex justify-content-between">
             {{ project.title }}
             <div class="btn-group">
-              <a
-                href="{% url 'projects:project_edit' project_id=project.id %}"
-                class="btn btn-primary"
-                >Edit</a
-              >
-              <form
-                action="{% url 'projects:project_delete' project_id=project.id %}"
-                method="post"
-              >
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Delete</button>
-              </form>
+              <div>
+                <a
+                  href="{% url 'projects:project_edit' project_id=project.id %}"
+                  class="btn btn-primary"
+                  style="margin-right: 1px"
+                  >Edit</a
+                >
+              </div>
+              <div>
+                <form
+                  action="{% url 'projects:project_delete' project_id=project.id %}"
+                  method="post"
+                >
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
             </div>
           </h5>
           <p class="card-text">{{ project.description }}</p>

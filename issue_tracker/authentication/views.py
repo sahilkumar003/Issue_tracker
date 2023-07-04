@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from users.serializers import UserSerializer
@@ -16,6 +16,9 @@ class HomeView(TemplateView):
 class SignupView(TemplateView):
     template_name = "authentication/signup.html"
 
+    def get(self, request):
+        return redirect("projects:dashboard")
+
     def post(self, request):
         serializer = UserSerializer(data=request.POST)
         if serializer.is_valid():
@@ -28,12 +31,17 @@ class SignupView(TemplateView):
             send_mail(subject, message, email_from, recipient_list)
             return redirect("signin")
         else:
-            context = self.get_context_data(serializer_errors=serializer.errors)
-            return self.render_to_response(context, status=status.HTTP_400_BAD_REQUEST)
+            context = self.get_context_data(
+                serializer_errors=serializer.errors, form_data=request.POST
+            )
+            return render(request, "authentication/signup.html", context=context)
 
 
 class SigninView(TemplateView):
     template_name = "authentication/signin.html"
+
+    def get(self, request):
+        return redirect("projects:dashboard")
 
     def post(self, request):
         email = request.POST.get("email")

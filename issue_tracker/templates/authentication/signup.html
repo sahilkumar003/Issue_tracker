@@ -20,7 +20,7 @@
 {% endblock %} {% block start %}
 <h3>Register</h3>
 
-<form action="/signup" method="post">
+<form onclick="return myfun()" action="/signup" method="post">
   {% csrf_token %}
 
   <div class="form-group">
@@ -31,6 +31,7 @@
       name="first_name"
       class="form-control"
       placeholder="Enter your first name"
+      value="{{ form_data.first_name }}"
       required
     />
     {% if serializer_errors.first_name %}
@@ -46,6 +47,7 @@
       name="last_name"
       class="form-control"
       placeholder="Enter your last name"
+      value="{{ form_data.last_name }}"
       required
     />
     {% if serializer_errors.last_name %}
@@ -61,8 +63,12 @@
       name="dob"
       class="form-control"
       placeholder="Enter your date of birth"
+      value="{{ form_data.dob }}"
       required
     />
+    {% if serializer_errors.dob %}
+    <p class="error-message">{{ serializer_errors.dob.0 }}</p>
+    {% endif %}
   </div>
 
   <div class="form-group">
@@ -73,6 +79,7 @@
       name="email"
       class="form-control"
       placeholder="Enter your valid Email Address"
+      value="{{ form_data.email }}"
       required
     />
     {% if serializer_errors.email %}
@@ -105,6 +112,7 @@
       placeholder="Confirm your password"
       required
     />
+    <div class="error-message" id="invalid"></div>
   </div>
 
   <div class="container">
@@ -117,4 +125,18 @@
     </div>
   </div>
 </form>
+
+<script>
+  function myfun() {
+    var a = document.getElementById("password").value;
+    var b = document.getElementById("password2").value;
+
+    if (a != b) {
+      document.getElementById("invalid").innerHTML = "Password must be same";
+      return false;
+    } else {
+      document.getElementById("invalid").innerHTML = "";
+    }
+  }
+</script>
 {% endblock %}
