@@ -127,12 +127,6 @@ class UpdateStoryView(LoginRequiredMixin, TemplateView):
             )
             return self.get(request, project_id=project_id, story_id=story_id)
 
-        if request.POST.get("is_scheduled") == "2" and story.status == 1:
-            messages.error(
-                request,
-                "To change the status of stories from not started, it should be scheduled",
-            )
-            return self.get(request, project_id=project_id, story_id=story_id)
 
         serializer = StorySerializer(story, data=request.POST, partial=True)
         if serializer.is_valid():
