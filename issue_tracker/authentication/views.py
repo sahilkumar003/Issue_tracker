@@ -16,8 +16,10 @@ class HomeView(TemplateView):
 class SignupView(TemplateView):
     template_name = "authentication/signup.html"
 
-    def get(self, request):
-        return redirect("projects:dashboard")
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("projects:dashboard")
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
         serializer = UserSerializer(data=request.POST)
@@ -40,8 +42,10 @@ class SignupView(TemplateView):
 class SigninView(TemplateView):
     template_name = "authentication/signin.html"
 
-    def get(self, request):
-        return redirect("projects:dashboard")
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("projects:dashboard")
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
         email = request.POST.get("email")
