@@ -1,6 +1,7 @@
 import re
 from rest_framework import serializers
 from users.models import User
+from datetime import date
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,6 +23,11 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Name should only contain alphabetical characters."
             )
+        return value
+
+    def validate_dob(self, value):
+        if value > date.today():
+            raise serializers.ValidationError("Date of birth cannot be in the future.")
         return value
 
     def validate_email(self, value):

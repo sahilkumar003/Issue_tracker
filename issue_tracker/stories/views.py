@@ -23,7 +23,8 @@ class CreateStoryView(LoginRequiredMixin, TemplateView):
             self.request.user in project.members.all()
             or self.request.user == project.owner
         ):
-            users = project.members.all()
+            users = list(project.members.all())
+            users.append(project.owner)
         else:
             users = None
 
@@ -94,7 +95,8 @@ class UpdateStoryView(LoginRequiredMixin, TemplateView):
             self.request.user in project.members.all()
             or self.request.user == project.owner
         ):
-            users = project.members.all()
+            users = list(project.members.all())
+            users.append(project.owner)
         else:
             users = None
 
@@ -116,17 +118,19 @@ class UpdateStoryView(LoginRequiredMixin, TemplateView):
             messages.error(request, "Started/Finished stories cannot be unscheduled.")
             return self.get(request, project_id=project_id, story_id=story_id)
 
-        if story.status in [2, 3] and request.POST.get("assignee") != story.assignee:
+        if story.status in [2, 3] and request.POST.get("assignee") != str(
+            story.assignee.id
+        ):
             messages.error(
                 request,
                 "Assignee cannot be changed for stories with status finished or started.",
             )
             return self.get(request, project_id=project_id, story_id=story_id)
 
-        if request.POST.get("is_scheduled") == "2" and story.status != 1:
+        if request.POST.get("is_scheduled") == "2" and story.status == 1:
             messages.error(
                 request,
-                "To unschedule a story, its state should be set to Not Started first.",
+                "To change the status of stories from not started, it should be scheduled",
             )
             return self.get(request, project_id=project_id, story_id=story_id)
 

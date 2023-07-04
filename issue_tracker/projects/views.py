@@ -8,6 +8,7 @@ from django.http import request
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db.models import Q
 
 
 class CreateProjectView(LoginRequiredMixin, TemplateView):
@@ -66,7 +67,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         elif filter_param == "member":
             projects = Project.objects.filter(members=user, is_deleted=False)
         else:
-            projects = Project.objects.filter(is_deleted=False)
+            projects = Project.objects.filter(
+                Q(owner=user) | Q(members=user), is_deleted=False
+            ).distinct()
 
         context["projects"] = projects
         return context
