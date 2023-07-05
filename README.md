@@ -14,7 +14,7 @@ Issue Tracker System is an agile project management tool used by teams to plan, 
 
 ## **Installation**
 
-1. Clone the repository: **`git clone https://github.com/techlyticaly-induction/issue-tracker-sahil.git`**
+1. Clone the repository: **`git clone https://github.com/sahilkumar003/Jira_clone.git`**
 2. Create a virtual environment: **`python -m venv env`**
 3. Activate the virtual environment:
     - For Windows: **`env\Scripts\activate`**
