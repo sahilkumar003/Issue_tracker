@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Psqlitsmesahil@123
+      POSTGRES_DB: Issue_Tracker
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Psqlitsmesahil@123
+      POSTGRES_DB: Issue_Tracker
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

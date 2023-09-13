@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Issue Management System</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'bootstrap/css/bootstrap.min.css' %}"
+    />
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: rgb(238, 174, 202);
+        background: radial-gradient(
+          circle,
+          rgba(238, 174, 202, 1) 0%,
+          rgba(148, 187, 233, 1) 52%
+        );
+      }
+
+      .alert {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+
+      .content-wrapper {
+        flex: 1;
+        padding-bottom: 60px;
+      }
+
+      footer {
+        background-color: #f8f9fa;
+        padding: 20px 0;
+        text-align: center;
+        margin-top: auto;
+        background: rgb(63, 94, 251);
+        background: radial-gradient(
+          circle,
+          rgba(63, 94, 251, 1) 0%,
+          rgba(252, 70, 107, 1) 100%
+        );
+      }
+
+      .logout-button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      .logout-button:hover {
+        background-color: #c82333;
+      }
+    </style>
+
+    {% block head %} {% endblock %}
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 px-0">
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a href="" class="navbar-brand">&nbsp; Issue Tracker System</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a href="{% url 'home' %}" class="nav-link">Home</a>
+                </li>
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                  <a href="/signup" class="nav-link">Register</a>
+                </li>
+                {% endif %} {% if not user.is_authenticated %}
+                <li class="nav-item">
+                  <a href="/signin" class="nav-link">Login</a>
+                </li>
+                {% endif %} {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a href="/projects/dashboard/all/" class="nav-link"
+                    >Dashboard</a
+                  >
+                </li>
+                {% endif %} {% if user.is_authenticated %}
+                <li class="nav-item" style="padding-left: 1050px">
+                  <a href="/users/profile_view" class="nav-link">Profile</a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        {% block messages %} {% for message in messages %}
+        <div
+          class="alert alert-{{ message.tags }} alert-dismissible fade show"
+          role="alert"
+        >
+          <strong style="color: #dc3545">Message:</strong> {{ message }}
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="close"
+            onclick="dismissAlert(this)"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %} {% endblock %} {% block start %} {% endblock %}
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p>&copy; 2023 Issue Tracker System. All rights reserved.</p>
+            {% if user.is_authenticated %}
+            <a href="/signout" class="logout-button">Logout</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{% static 'jquery.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+      function dismissAlert(button) {
+        $(button).closest(".alert").alert("close");
+      }
+    </script>
+  </body>
+</html>
