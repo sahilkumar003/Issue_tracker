@@ -1,0 +1,144 @@
+{% extends 'base.html' %} {% block head %}
+<style>
+  .text-center {
+    text-align: center;
+  }
+
+  .mt-4 {
+    margin-top: 4rem;
+  }
+
+  .card {
+    margin-bottom: 1.5rem;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.677);
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 4px;
+  }
+
+  .badge.bg-secondary {
+    background-color: #6c757d;
+  }
+
+  .badge.bg-info {
+    background-color: #17a2b8;
+  }
+
+  .badge.bg-primary {
+    background-color: #007bff;
+  }
+
+  .badge.bg-success {
+    background-color: #28a745;
+  }
+
+  p.text-muted {
+    font-style: italic;
+    text-align: center;
+  }
+
+  .card-header {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+  }
+
+  .card-body {
+    background-color: #fff;
+    padding: 1.5rem;
+  }
+</style>
+{% endblock %} {% block start %}
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="text-center">Story List</h1>
+      <h4 class="text-center">{{ project.title }}</h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <h5 class="text-center">Scheduled Stories</h5>
+          {% if scheduled_stories %} {% for story in scheduled_stories %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">{{ story.title }}</h5>
+              <p class="card-text">{{ story.description }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-secondary">{{ story.assignee }}</span>
+                <span class="badge bg-info">{{ story.estimate }}Hrs.</span>
+                <span class="badge bg-primary"
+                  >{{ story.get_status_display }}</span
+                >
+                <span class="badge bg-success"
+                  >{{ story.get_is_scheduled_display }}</span
+                >
+              </div>
+              <a
+                href="{% url 'stories:stories_update' project_id=project.id story_id=story.id %}"
+                class="btn btn-primary mt-3"
+                >Edit</a
+              >
+              <form
+                action="{% url 'stories:stories_delete' project_id=project.id story_id=story.id %}"
+                method="post"
+              >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <p class="text-muted text-center">No scheduled stories found.</p>
+          {% endif %}
+        </div>
+        <div class="col">
+          <h5 class="text-center">Unscheduled Stories</h5>
+          {% if unscheduled_stories %} {% for story in unscheduled_stories %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">{{ story.title }}</h5>
+              <p class="card-text">{{ story.description }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-secondary">{{ story.assignee }}</span>
+                <span class="badge bg-info">{{ story.estimate }}Hrs.</span>
+                <span class="badge bg-primary"
+                  >{{ story.get_status_display }}</span
+                >
+                <span class="badge bg-success"
+                  >{{ story.get_is_scheduled_display }}</span
+                >
+              </div>
+              <a
+                href="{% url 'stories:stories_update' project_id=project.id story_id=story.id %}"
+                class="btn btn-primary mt-3"
+                >Edit</a
+              >
+              <form
+                action="{% url 'stories:stories_delete' project_id=project.id story_id=story.id %}"
+                method="post"
+              >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <p class="text-muted text-center">No unscheduled stories found.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

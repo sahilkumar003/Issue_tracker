@@ -1,0 +1,52 @@
+[tool.black]
+line-length = 120
+
+[tool.coverage]
+run = ["coverage", "run", "-m"]
+parallel = true
+concurrency = ["multiprocessing", "thread"]
+omit = [
+    "settings/common.py",
+    "settings/dev.py",
+    "settings/local.py",
+    "settings/test.py",
+    "asgi.py",
+    "wsgi.py",
+    "manage.py",
+]
+
+[tool.coverage.report]
+fail_under = 100
+precision = 2
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]
+
+[tool.pre_commit]
+hooks = [
+    "black",
+    "pylint",
+    "flake8",
+    "check-EOF",
+    "check-private-key",
+    "check-aws-creds",
+    "isort",
+    "bandit",
+]
+
+[tool.pylint]
+disable = "broad-except"
+enable = "docstring"
+
+[tool.flake8]
+max-line-length = 180
+max-complexity = 20  
+
+[tool.isort]
+profile = "black"
+
+[tool.bandit]
+targets = ["**/*.py"]

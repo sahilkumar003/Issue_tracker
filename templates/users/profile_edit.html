@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block start %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center p-3 bg-light my-2">
+      <h1>Edit Profile</h1>
+    </div>
+    <div class="col-md-6 max-auto">
+      <form action="/users/profile_edit" method="post">
+        {% csrf_token %}
+        <div class="" form-group>
+          <div class="col-md-6">
+            <label>First name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="first_name"
+              value="{{users.first_name}}"
+              placeholder="Enter First name"
+            />
+          </div>
+          {% if serializer_errors.first_name %}
+             <p class="error-message" style="color: #dc3545;">{{ serializer_errors.first_name.0 }}</p>
+          {% endif %}
+        </div>
+        <div class="" form-group>
+          <div class="col-md-6">
+            <label>Last name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="last_name"
+              value="{{users.last_name}}"
+              placeholder="Enter Last name"
+            />
+          </div>
+          {% if serializer_errors.last_name %}
+             <p class="error-message" style="color: #dc3545;">{{ serializer_errors.last_name.0 }}</p>
+          {% endif %}
+        </div>
+        <div class="" form-group>
+          <div class="col-md-6">
+            <label>DOB</label>
+            <input
+              type="date"
+              class="form-control"
+              name="dob"
+              value="{{users.dob}}"
+              placeholder="Enter date of birth"
+            />
+          </div>
+        </div>
+        <div class="" form-group>
+          <div class="form-group">
+            <input
+              type="submit"
+              name="chnageprofile"
+              value="Save Chnages"
+              class="btn btn-primary rounded-pill"
+              style="width: 50%; margin-top: 10px"
+            />
+          </div>
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
